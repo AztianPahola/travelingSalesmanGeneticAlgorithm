@@ -55,7 +55,7 @@ This will result in a mutation rate of ~ 2%
 # Psuedo Code
 
 public class travelingSalesman{
-	public static void main(String args()){
+	public static void main(String args[]){
 		
 		int[][] adjecencyMatrix = *Above matrix, in Problem Statement*
 		List resultingPath = GeneratePath(adjecencyMatrix, int n) //n = number of cities
@@ -66,30 +66,38 @@ public class travelingSalesman{
 	} 
 
 	private static List generatePath(int[][] input, int n){
-		const float MINIMUMIMPROVEMENT = 0.05;	// Once the average improvement is lower than this value, the algorithm will end
-		float improvement = 0;	// Running average improvement between generations
+		final double MINIMUMIMPROVEMENT = 0.05;	// Once the average improvement is lower than this value, the algorithm will end
+		final double MINIMUMGENERATIONS = 10;	// Minumum number of generation that will be generated
+		double improvement = 0;	// Running average improvement between generations
 		int generation = 0;	// Current number of generations, used to calculate improvement
-		float previousTotalStrength;
+		double previousTotalStrength;
 
 		chromosome[2^n] currentGeneration = generateInitialPaths(input, n);
 
 		do{
-		float totalStrength = *Add all chromosomes strengths*
-		float[2^n] cumulativeStrengths;
+		double totalStrength = *Add all chromosomes strengths*
+		double[] cumulativeStrengths;
 		
 		*Add the normalized strengths of each chromosome cumulatively to cumulativeStrengths array*
 
 		*Randomly generate a float between 0 and 1 to select a parent, repeat until 2^n/2 parents are selected*
 		
-		chromosome[2^n/2] parents = *"Randomly" selected chromosomes, based on strength*
+		chromosome[] parents = *"Randomly" selected chromosomes, based on strength*
 		
-		chromosome[2^n] nextGeneration = crossOver(parents, n);
+		chromosome[] nextGeneration = crossOver(parents, n);
 		
 		// Calculate change to improvement
 		improvement += (totalStrength - previousTotalStrength)/ previousTotalStrength / ++generation;
 		previousTotalStrength = totalStrength;		
 
-		}while(improvement >= .05);
+		}while(generation >= MINIMUMGENERATIONS && improvement >= MINIMUMIMPROVEMENT);
+	}
+
+	private chromosome selectRandom(chromosome[] chromos, double[] ranges, int low, int high){
+		
+		// Binary search for the correct chromosome, return that chromosome
+
+
 	}
 
 	private static chromosome[] generateInitialPaths(int[][] input, int n){
@@ -135,5 +143,9 @@ public class chromosome{
 
 	public int getDistance(){
 		return distance;
+	}
+
+	public int getStrength(){
+		return strength;
 	}
 }
