@@ -49,7 +49,7 @@ public class travelingSalesman {
 			}
 			chromosome[] parents = new chromosome[currentGeneration.length/2]; 
 			for (int i = 0; i < size/2; i++) {
-				parents[0] = selectRandom(currentGeneration, cumulativeStrengths, 0, size/2);
+				parents[i] = selectRandom(currentGeneration, cumulativeStrengths, 0, size/2);
 				
 			}
 
@@ -66,6 +66,31 @@ public class travelingSalesman {
 			previousTotalStrength = totalStrength;
 
 		} while (generation >= MINIMUMGENERATIONS && improvement >= MINIMUMIMPROVEMENT);
+	}
+	
+	private static chromosome selectRandom(chromosome[] chromos, double[] ranges, int low, int high){
+			
+		// Generate a random double, select the correct chromosome based on that random
+		double random = Math.random();
+		int mid = low+high/2;
+		while(low < high) {
+			
+			if(ranges[mid] < random) {
+				if(ranges[mid+1] >= random) 
+					return chromos[mid+1];
+				else 
+					low = mid;
+			}
+			else {
+				if(mid == 0 || ranges[mid-1] < random) 
+					return chromos[mid];
+				else
+					high = mid;
+			}
+			mid = low+high/2;
+		}
+		return chromos[mid];
+	
 	}
 
 }
