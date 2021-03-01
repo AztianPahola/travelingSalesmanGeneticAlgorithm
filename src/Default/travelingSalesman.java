@@ -131,13 +131,44 @@ public class travelingSalesman {
 			path1.add(indexCity2,randomCity);
 			path2.add(indexCity1,randomCity);
 			
+			// Update paths in the chromosomes
+			padres[i].setPath(path1);
+			padres[i+1].setPath(path2);
+			
 			// Potentially mutate based on mutationFactor
 			if(mutationFactor <= .01)
-				padres[i] = mutate(padres[i]);
+				padres[i] = mutate(padres[i], numCities);
 			else if(mutationFactor >= .99) 
-				padres[i+1] = mutate(padres[i+1]);
+				padres[i+1] = mutate(padres[i+1], numCities);
 				
 		}
+	}
+	
+	private static chromosome mutate(chromosome chromo, int numCities){
+		
+		// Select an int from 0 to numCities-1, 
+		int randomIndex = (int)(Math.random() * numCities);
+		
+		LinkedList<Integer> path = chromo.getPath();
+		Integer cityAtIndex = path.remove(randomIndex);
+		
+		// Swap the order between the city at index randomCity and the city at randomCity+1, or index 0 if randomCity is at the end
+		
+		if(randomIndex < numCities-1) { // the random city is NOT the last in the list
+			path.add(randomIndex+1,cityAtIndex);
+		}else { // The city is the last in the list
+			// Get the integer at the beginning
+			Integer cityAtBeginning = path.removeFirst();
+			
+			// Put the last city first, and the first city last
+			path.addFirst(cityAtIndex);
+			path.addLast(cityAtBeginning);
+		}
+		
+		// Update path in the chromosome
+		chromo.setPath(path);
+		return chromo;
+
 	}
 
 }
