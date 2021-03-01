@@ -54,9 +54,8 @@ public class travelingSalesman {
 
 			chromosome[] nextGeneration = new chromosome[size];
 			
-			for (int i = 0; i < size; i += 2) {
-				nextGeneration[i] = crossOver(parents[i], parents[i+1]);
-			}
+			nextGeneration = crossOver(parents, size, n);
+			
 
 			// Calculate change to improvement, avoiding a divide by zero error
 			if(generation > 0) {
@@ -98,6 +97,47 @@ public class travelingSalesman {
 			paths[i] = new chromosome(input, n);
 		}
 		return paths;
+	}
+	
+	private static chromosome[] crossOver(chromosome[] padres, int size, int numCities) {
+		Integer randomCity;
+		
+		int indexCity1;
+		int indexCity2;
+		
+		LinkedList<Integer> path1;
+		LinkedList<Integer> path2;
+		
+		double mutationFactor = Math.random();
+		
+		for (int i = 0; i < size; i++) {
+			// Get paths from chromosomes
+			path1 = padres[i].getPath();
+			path2 = padres[i+1].getPath();
+			
+			// Select an int from 0 to numCities-1, 
+			randomCity = (int)(Math.random() * numCities);
+			
+			// Get indexes of the city in each path
+			indexCity1 = path1.indexOf(randomCity);
+			indexCity2 = path2.indexOf(randomCity);
+			
+			// Remove the city from the paths
+			path1.remove(indexCity1);
+			path2.remove(indexCity2);
+			
+			// Insert the city back into the paths, using the index from the
+			// partner chromosome
+			path1.add(indexCity2,randomCity);
+			path2.add(indexCity1,randomCity);
+			
+			// Potentially mutate based on mutationFactor
+			if(mutationFactor <= .01)
+				padres[i] = mutate(padres[i]);
+			else if(mutationFactor >= .99) 
+				padres[i+1] = mutate(padres[i+1]);
+				
+		}
 	}
 
 }

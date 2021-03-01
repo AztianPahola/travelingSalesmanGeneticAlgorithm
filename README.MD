@@ -116,7 +116,15 @@ public class travelingSalesman{
 			float mutationFactor = *Random float between 0 and 1*
 			
 			*Mutate if appropriate*
-		} 
+		}
+	}
+
+	private static chromosome mutate(chromosome chromo, int numCities){
+	
+		int randomCity = random value between 0 and numCities-1
+		
+		// Swap the order between the city at index randomCity and the city at randomCity+1, or index 0 if randomCity is at the end
+
 	}
 }
 
