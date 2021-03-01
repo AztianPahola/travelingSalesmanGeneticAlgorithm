@@ -20,9 +20,8 @@ public class travelingSalesman {
 
 	private static int[] generatePath(int[][] input, int n) {
 
-		final double MINIMUMIMPROVEMENT = 0.05; // Once the average improvement is lower than this value, the algorithm
-												// will end
-		final double MINIMUMGENERATIONS = 10;	// Minumum number of generation that will be generated
+		final double MINIMUMIMPROVEMENT = 0.05; // Once the average improvement is lower than this value, the algorithm will end
+		final double MINIMUMGENERATIONS = 10;	// Minimum number of generation that will be generated
 		double improvement = 0; // Running average improvement between generations
 		int generation = 0; // Current number of generations, used to calculate improvement
 		double previousTotalStrength;
@@ -59,7 +58,7 @@ public class travelingSalesman {
 				nextGeneration[i] = crossOver(parents[i], parents[i+1]);
 			}
 
-			// Calculate change to improvement
+			// Calculate change to improvement, avoiding a divide by zero error
 			if(generation > 0) {
 				improvement += (totalStrength - previousTotalStrength) / previousTotalStrength / ++generation;
 			}
@@ -91,6 +90,14 @@ public class travelingSalesman {
 		}
 		return chromos[mid];
 	
+	}
+	
+	private static chromosome[] generateInitialPaths(int[][] input, int n) {
+		chromosome[] paths = new chromosome[2^n];
+		for (int i = 0; i < (2^n); i++) {
+			paths[i] = new chromosome(input, n);
+		}
+		return paths;
 	}
 
 }

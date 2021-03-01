@@ -102,7 +102,7 @@ public class travelingSalesman{
 
 	private static chromosome[] generateInitialPaths(int[][] input, int n){
 	
-		chromosome[2^n] paths = new chromosome[2^n]; 
+		chromosome[] paths = new chromosome[2^n]; 
 		for(int i = 0; i < 2^n; i++){
 			paths[i] = new chromosome(input, n);	
 		}
