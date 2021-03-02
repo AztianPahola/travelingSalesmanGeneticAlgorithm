@@ -1,6 +1,6 @@
 package Default;
 
-import java.util.*;
+import java.util.LinkedList;
 
 public class travelingSalesman {
 
@@ -46,7 +46,7 @@ public class travelingSalesman {
 															    parents for the next generation */
 			
 			// Initialize index 0 to avoid out of array index error in the following for loop
-			cumulativeStrengths[0] = currentGeneration[0].getStrength/totalStrength;
+			cumulativeStrengths[0] = currentGeneration[0].getStrength()/totalStrength;
 			
 			// Add the normalized strengths of each chromosome cumulatively to the cumulativeStrengths array 
 			for (int i = 1; i < size; i++){
