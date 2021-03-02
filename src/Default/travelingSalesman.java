@@ -24,9 +24,10 @@ public class travelingSalesman {
 	// Generate an acceptable path to take between the cities through a genetic algorithm
 	private static chromosome generatePath(int[][] input, int n) {
 
-		final double MINIMUMIMPROVEMENT = 0.05; // Once the average improvement is lower than this value, the algorithm will end
-		final double MINIMUMGENERATIONS = 10;	// Minimum number of generation that will be generated
-		double improvement = 0; // Running average improvement between generations
+		final double MINIMUMIMPROVEMENT = 0.005; // Once the average improvement is lower than this value, the algorithm will end
+		final double MINIMUMGENERATIONS = 100;	// Minimum number of generation that will be generated
+		LinkedList<Double> improvements = new LinkedList<Double>(); // Contains the percent improvement of the last MINIMUMGENERATIONS generations
+		double averageImprovement;
 		int generation = 0; // Current number of generations, used to calculate improvement
 		double previousTotalStrength = 0; // Used to calculate improvement
 		int size; // Size of the population
@@ -75,13 +76,28 @@ public class travelingSalesman {
 			
 
 			// Calculate change to improvement, avoiding a divide by zero error with following if
-			if(generation > 0) {
-				improvement += (totalStrength - previousTotalStrength) / previousTotalStrength / ++generation;
+			if(previousTotalStrength > 0 ) {
+				if (generation < MINIMUMGENERATIONS) {
+					double improvement = (totalStrength - previousTotalStrength) / previousTotalStrength;
+					improvements.add(improvement);
+				}else {
+					double improvement = (totalStrength - previousTotalStrength) / previousTotalStrength;
+					improvements.removeFirst();
+					improvements.addLast(improvement);
+				}
 			}
+			
+			double sum = 0;
+			for (int i = 0; i < improvements.size(); i++) {
+				sum += improvements.get(0);
+			}
+			
+			averageImprovement = sum/MINIMUMGENERATIONS;
 			previousTotalStrength = totalStrength;
 			currentGeneration = nextGeneration;
+			generation++;
 
-		} while (generation >= MINIMUMGENERATIONS && improvement >= MINIMUMIMPROVEMENT);
+		} while (generation < MINIMUMGENERATIONS || averageImprovement >= MINIMUMIMPROVEMENT);
 		
 		int indexOfStrongest = 0; // Index of the chromosome with the best path
 		// Determine which chromosome has the best path
