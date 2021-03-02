@@ -116,7 +116,7 @@ public class travelingSalesman {
 				else
 					high = mid;
 			}
-			mid = low+high/2;
+			mid = (low+high)/2;
 		}
 		return chromos[mid];
 	
