@@ -13,8 +13,9 @@ public class travelingSalesman {
 								   {11, 7, 9, 0, 2},
 								   {18, 7, 17, 4, 0}};
 		LinkedList<Integer> resultingPath = generatePath(adjecencyMatrix, numCities);
+		System.out.println("The genetic algorithm determined the following path to be the best:");
 		for(int x : resultingPath){
-			System.out.println(x);
+			System.out.print(x + " ");
 		}
 	}
 
