@@ -18,7 +18,7 @@ public class chromosome {
         	for (int i = 0; i < n-1; i++) {
 				distance += input[path.get(i)-1][path.get(i+1)-1];
 			}
-		strength = 1 / distance;  // Strength will be higher the lower the distance
+		strength = 1.0 / distance;  // Strength will be higher the lower the distance
 	}
 
 	public LinkedList<Integer> getPath(){

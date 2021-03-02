@@ -55,11 +55,16 @@ public class travelingSalesman {
 				cumulativeStrengths[i] = cumulativeStrengths[i-1] + relativeStrength;
 			}
 			
-			parents = new chromosome[size/2]; /* Initialize parents as an empty array, 
+			parents = new chromosome[size]; /* Initialize parents as an empty array, 
 												 half the size of the current generation */
-			// "Randomly" select parents0
-			for (int i = 0; i < size/2; i++) {
-				parents[i] = selectRandom(currentGeneration, cumulativeStrengths, 0, size/2);
+			
+			parents[0] = selectRandom(currentGeneration, cumulativeStrengths, 0, size);
+			// "Randomly" select parents
+			for (int i = 1; i < size; i++) {
+				parents[i] = selectRandom(currentGeneration, cumulativeStrengths, 0, size);
+				// Avoid a chromosome being paired with itself ( causes issues in crossOver )
+				while(parents[i] == parents[i-1])
+					parents[i] = selectRandom(currentGeneration, cumulativeStrengths, 0, size);
 				
 			}
 			
@@ -88,7 +93,7 @@ public class travelingSalesman {
 	
 	// Select a parent pseudo-randomly through a binary search for the correct range for a randomly generated double 
 	private static chromosome selectRandom(chromosome[] chromos, double[] ranges, int low, int high){
-			
+		
 		// Generate a random double, select the correct chromosome based on that random double
 		double random = Math.random();
 		
@@ -138,7 +143,7 @@ public class travelingSalesman {
 		
 		double mutationFactor = Math.random();
 		
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i += 2) {
 			// Get paths from chromosomes
 			path1 = padres[i].getPath();
 			path2 = padres[i+1].getPath();
