@@ -132,10 +132,10 @@ public class chromosome{
 
 	private LinkedList path;
 	private int distance;
-	private float strength;
+	private double strength;
 	
 	public chromosome(int[][] input, int n){
-		LinkedList<Integer> randomPath = new ArrayList<Integer>();
+		LinkedList<Integer> randomPath = new LinkedList<Integer>();
         	for (int i = 1; i <= n; i++) {
             		randomPath.add(i);
         	}
@@ -145,7 +145,7 @@ public class chromosome{
 		strength = 1 / distance;  // Strength will be higher the lower the distance
 	}
 
-	public List getPath(){
+	public LinkedList<Integer> getPath(){
 		return path;
 	}
 
@@ -153,7 +153,13 @@ public class chromosome{
 		return distance;
 	}
 
-	public int getStrength(){
+	public double getStrength(){
 		return strength;
+	}
+
+	public void setPath(LinkedList<Integer> newPath){
+	
+		path = newPath;
+
 	}
 }
