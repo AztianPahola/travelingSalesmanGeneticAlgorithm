@@ -87,6 +87,7 @@ public class travelingSalesman {
 				}
 			}
 			
+			// Calculate sum for average
 			double sum = 0;
 			for (int i = 0; i < improvements.size(); i++) {
 				sum += improvements.get(0);
