@@ -12,15 +12,17 @@ public class travelingSalesman {
 								   {4, 5, 0, 7 , 16},
 								   {11, 7, 9, 0, 2},
 								   {18, 7, 17, 4, 0}};
-		LinkedList<Integer> resultingPath = generatePath(adjecencyMatrix, numCities);
+		chromosome bestChromosome = generatePath(adjecencyMatrix, numCities);
+		LinkedList<Integer> resultingPath = bestChromosome.getPath();
 		System.out.println("The genetic algorithm determined the following path to be the best:");
 		for(int x : resultingPath){
 			System.out.print(x + " ");
 		}
+		System.out.println("- resulting in a total distance of " + bestChromosome.getDistance());
 	}
 
 	// Generate an acceptable path to take between the cities through a genetic algorithm
-	private static LinkedList<Integer> generatePath(int[][] input, int n) {
+	private static chromosome generatePath(int[][] input, int n) {
 
 		final double MINIMUMIMPROVEMENT = 0.05; // Once the average improvement is lower than this value, the algorithm will end
 		final double MINIMUMGENERATIONS = 10;	// Minimum number of generation that will be generated
@@ -87,7 +89,8 @@ public class travelingSalesman {
 			if(currentGeneration[i].getStrength() > currentGeneration[indexOfStrongest].getStrength())
 				indexOfStrongest = i;
 		}
-		return currentGeneration[indexOfStrongest].getPath();
+		System.out.println("Number of generations generated: " + generation);
+		return currentGeneration[indexOfStrongest];
 		
 	}
 	
