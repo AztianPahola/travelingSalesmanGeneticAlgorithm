@@ -12,20 +12,20 @@ public class travelingSalesman {
 								   {4, 5, 0, 7 , 16},
 								   {11, 7, 9, 0, 2},
 								   {18, 7, 17, 4, 0}};
-		int[] resultingPath = generatePath(adjecencyMatrix, numCities);
+		LinkedList<Integer> resultingPath = generatePath(adjecencyMatrix, numCities);
 		for(int x : resultingPath){
 			System.out.println(x);
 		}
 	}
 
 	// Generate an acceptable path to take between the cities through a genetic algorithm
-	private static int[] generatePath(int[][] input, int n) {
+	private static LinkedList<Integer> generatePath(int[][] input, int n) {
 
 		final double MINIMUMIMPROVEMENT = 0.05; // Once the average improvement is lower than this value, the algorithm will end
 		final double MINIMUMGENERATIONS = 10;	// Minimum number of generation that will be generated
 		double improvement = 0; // Running average improvement between generations
 		int generation = 0; // Current number of generations, used to calculate improvement
-		double previousTotalStrength; // Used to calculate improvement
+		double previousTotalStrength = 0; // Used to calculate improvement
 		int size; // Size of the population
 		chromosome[] parents; // Chromosomes selected to be crossed over to create the next generation
 		chromosome[] nextGeneration; // Chromosomes of the next generation
@@ -50,7 +50,7 @@ public class travelingSalesman {
 			
 			// Add the normalized strengths of each chromosome cumulatively to the cumulativeStrengths array 
 			for (int i = 1; i < size; i++){
-				double relativeStrength = currentGeneration[i].getStrength/totalStrength;
+				double relativeStrength = currentGeneration[i].getStrength()/totalStrength;
 				cumulativeStrengths[i] = cumulativeStrengths[i-1] + relativeStrength;
 			}
 			
@@ -71,8 +71,18 @@ public class travelingSalesman {
 				improvement += (totalStrength - previousTotalStrength) / previousTotalStrength / ++generation;
 			}
 			previousTotalStrength = totalStrength;
+			currentGeneration = nextGeneration;
 
 		} while (generation >= MINIMUMGENERATIONS && improvement >= MINIMUMIMPROVEMENT);
+		
+		int indexOfStrongest = 0; // Index of the chromosome with the best path
+		// Determine which chromosome has the best path
+		for (int i = 0; i < size; i++){
+			if(currentGeneration[i].getStrength() > currentGeneration[indexOfStrongest].getStrength())
+				indexOfStrongest = i;
+		}
+		return currentGeneration[indexOfStrongest].getPath();
+		
 	}
 	
 	// Select a parent pseudo-randomly through a binary search for the correct range for a randomly generated double 
@@ -156,9 +166,9 @@ public class travelingSalesman {
 			if(mutationFactor <= .01)
 				padres[i] = mutate(padres[i], numCities);
 			else if(mutationFactor >= .99) 
-				padres[i+1] = mutate(padres[i+1], numCities);
-				
+				padres[i+1] = mutate(padres[i+1], numCities);		
 		}
+		return padres;
 	}
 	
 	// Flip the order of a random 2 city path in a given chromosome
