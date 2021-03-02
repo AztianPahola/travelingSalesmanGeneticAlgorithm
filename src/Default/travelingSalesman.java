@@ -33,7 +33,7 @@ public class travelingSalesman {
 		
 		// Generate generation 0 randomly
 		chromosome[] currentGeneration = generateInitialPaths(input, n);
-		
+
 		size = currentGeneration.length;
 
 		do {
@@ -119,8 +119,8 @@ public class travelingSalesman {
 	
 	// Generate generation 0 randomly
 	private static chromosome[] generateInitialPaths(int[][] input, int n) {
-		chromosome[] paths = new chromosome[2^n];
-		for (int i = 0; i < (2^n); i++) {
+		chromosome[] paths = new chromosome[(int)Math.pow(2,n)];
+		for (int i = 0; i < (int)Math.pow(2,n); i++) {
 			paths[i] = new chromosome(input, n);
 		}
 		return paths;
@@ -143,10 +143,9 @@ public class travelingSalesman {
 			path1 = padres[i].getPath();
 			path2 = padres[i+1].getPath();
 			
-			// Select an int from 0 to numCities-1, 
-			randomCity = (Integer)(int)(Math.random() * numCities);
-			
-			System.out.println(randomCity);
+			// Select an int from 1 to numCities, 
+			randomCity = (Integer)(int)((Math.random() * numCities)+1);
+
 			// Get indexes of the city in each path
 			indexCity1 = path1.indexOf(randomCity);
 			indexCity2 = path2.indexOf(randomCity);
