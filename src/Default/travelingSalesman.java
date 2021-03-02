@@ -144,8 +144,9 @@ public class travelingSalesman {
 			path2 = padres[i+1].getPath();
 			
 			// Select an int from 0 to numCities-1, 
-			randomCity = (int)(Math.random() * numCities);
+			randomCity = (Integer)(int)(Math.random() * numCities);
 			
+			System.out.println(randomCity);
 			// Get indexes of the city in each path
 			indexCity1 = path1.indexOf(randomCity);
 			indexCity2 = path2.indexOf(randomCity);
