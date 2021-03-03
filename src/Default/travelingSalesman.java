@@ -27,7 +27,7 @@ public class travelingSalesman {
 		final double MINIMUMIMPROVEMENT = 0.005; // Once the average improvement is lower than this value, the algorithm will end
 		final double MINIMUMGENERATIONS = 100;	// Minimum number of generation that will be generated
 		LinkedList<Double> improvements = new LinkedList<Double>(); // Contains the percent improvement of the last MINIMUMGENERATIONS generations
-		double averageImprovement;
+		double averageImprovement = 0;
 		int generation = 0; // Current number of generations, used to calculate improvement
 		double previousTotalStrength = 0; // Used to calculate improvement
 		int size; // Size of the population
@@ -76,24 +76,26 @@ public class travelingSalesman {
 			
 
 			// Calculate change to improvement, avoiding a divide by zero error with following if
+			// Calculate sum for average
+			
 			if(previousTotalStrength > 0 ) {
-				if (generation < MINIMUMGENERATIONS) {
+				if (generation < MINIMUMGENERATIONS-1) {
 					double improvement = (totalStrength - previousTotalStrength) / previousTotalStrength;
 					improvements.add(improvement);
 				}else {
 					double improvement = (totalStrength - previousTotalStrength) / previousTotalStrength;
 					improvements.removeFirst();
 					improvements.addLast(improvement);
+					double sum = 0;
+					for (int i = 0; i < improvements.size(); i++) {
+						sum += improvements.get(0);
+					}
+					averageImprovement = sum/improvements.size();
 				}
 			}
 			
-			// Calculate sum for average
-			double sum = 0;
-			for (int i = 0; i < improvements.size(); i++) {
-				sum += improvements.get(0);
-			}
 			
-			averageImprovement = sum/MINIMUMGENERATIONS;
+			
 			previousTotalStrength = totalStrength;
 			currentGeneration = nextGeneration;
 			generation++;
